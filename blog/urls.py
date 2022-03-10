@@ -7,6 +7,7 @@ from .views import (
     BlogUpdateView,
     BlogDeleteView,
     AddCommentView,
+    HomePageView,
 )
 
 urlpatterns = [
@@ -16,4 +17,5 @@ urlpatterns = [
     path('post/new/', BlogCreateView.as_view(), name='post_new'),
     path('', BlogListView.as_view(), name='home'),
     path('post/<int:pk>/comment/', AddCommentView.as_view(), name='add_comment'),
+    path('', HomePageView.as_view(), name='home'),
 ]
