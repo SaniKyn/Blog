@@ -29,4 +29,4 @@ class Comment(models.Model):
         return f"{self.post} ⸱ {self.body}"
 
     def get_absolute_url(self):
-        return reverse_lazy("post_detail", args=[str(self.id)])
+        return reverse_lazy("post_detail", args=[str(self.post.id)])

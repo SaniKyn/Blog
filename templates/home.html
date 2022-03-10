@@ -1,11 +1,17 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  {% for post in object_list %}
-  <div class="post-entry">
+{% for post in object_list %}
+<div class="post-entry">
     <h2><a href="{% url 'post_detail' post.pk %}">{{ post.title }}</a></h2>
+<<<<<<< main
+=======
+    {% if post.header_image%}
+    <img src="{{ post.header_image.url}}" alt="{{ post.title }}">
+    {% endif %}
+>>>>>>> local
     <p>{{ post.body }}</p>
     <b>{{ post.author.username}} | {{post.date}}</b>
-  </div>
-  {% endfor %}
+</div>
+{% endfor %}
 {% endblock content %}

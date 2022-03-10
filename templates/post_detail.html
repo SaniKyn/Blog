@@ -4,6 +4,12 @@
 {% block content %}
 <div class='post-entry'>
     <h2>{{ post.title }}</h2>
+<<<<<<< main
+=======
+    {% if post.header_image%}
+    <img src="{{ post.header_image.url}}" alt="{{ post.title }}">
+    {% endif %}
+>>>>>>> local
     <p>{{ post.body }}</p>
 </div>
 
