@@ -14,23 +14,23 @@ class Post(models.Model):
     date = models.DateTimeField(auto_now_add=True, null=True)
     body = models.TextField()
 
-    def save(self, *args, **kwargs):
-        super(Post, self).save(*args, **kwargs)
-
-        if self.header_image:
-            filepath = self.header_image.path
-            width = self.header_image.width
-            height = self.header_image.height
-            max_size = max(width, height)
-            if max_size > _MAX_SIZE:
-                image = Image.open(filepath)
-
-                image = image.resize(
-                    (round(width / max_size * _MAX_SIZE),
-                     round(height / max_size * _MAX_SIZE)),
-                    Image.ANTIALIAS
-                )
-                image.save(filepath)
+    # def save(self, *args, **kwargs):
+    #     super(Post, self).save(*args, **kwargs)
+    #
+    #     if self.header_image:
+    #         filepath = self.header_image.path
+    #         width = self.header_image.width
+    #         height = self.header_image.height
+    #         max_size = max(width, height)
+    #         if max_size > _MAX_SIZE:
+    #             image = Image.open(filepath)
+    #
+    #             image = image.resize(
+    #                 (round(width / max_size * _MAX_SIZE),
+    #                  round(height / max_size * _MAX_SIZE)),
+    #                 Image.ANTIALIAS
+    #             )
+    #             image.save(filepath)
 
     def __str__(self):
         return '\n'.join((self.title, f'{self.author.username} | {self.date}', '\n', self.body[:140]))

@@ -1,2 +1,6 @@
+# https://github.com/github/gitignore/blob/main/Python.gitignore
+
 .idea/
-db.sqlite
+db.sqlite3
+__pycache__/
+.env

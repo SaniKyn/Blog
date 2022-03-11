@@ -1,14 +1,56 @@
 {% extends 'base.html' %}
 
 {% block content %}
-{% for post in object_list %}
-<div class="post-entry">
-    <h2><a href="{% url 'post_detail' post.pk %}">{{ post.title }}</a></h2>
-    {% if post.header_image %}
-    <img src="{{ post.header_image.url}}" alt="{{ post.title }}">
-    {% endif %}
-    <p>{{ post.body }}</p>
-    <b>{{ post.author.username}} | {{post.date}}</b>
-</div>
-{% endfor %}
+<!-- https://getbootstrap.com/docs/4.6/components/card/ -->
+<div class="card-deck">
+    {% for post in object_list %}
+    <div class="card border-primary">
+        {% if post.header_image %}
+        <a href="{{ post.get_absolute_url }}"><img src="{{ post.header_image.url }}" class="card-img-top"
+                                                   alt="{{ post.title }}"></a>
+        {% endif %}
+        <div class="card-header">
+            <h2 class="card-title"><a href="{% url 'post_detail' post.pk %}">{{ post.title }}</a></h2>
+        </div>
+        <div class="card-body">
+            <!--     https://docs.djangoproject.com/en/3.2/ref/templates/builtins/#truncatewords-html -->
+            {{ post.body | truncatewords_html:20 }}
+        </div>
+        <div class="card-footer text-center">
+            <a class="btn btn-outline-success" href="{% url 'posts_by_author' post.author.id %}">
+                {{ post.author.username }}</a> | {{ post.date}} | <span class="text-muted">{{ post.comments.count }} comments</span>
+        </div>
+    </div>
+    {% endfor %}
+</div><br>
+
+<!-- pagination  -->
+<!-- https://getbootstrap.com/docs/4.6/components/pagination/#alignment -->
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+
+        {% if page_obj.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+        </li>
+        {% endif %}
+
+        {% for p in paginator.page_range %}
+                   {% if page_obj.number == p %}
+        <li class="page-item "><a class="page-link">{{ p }}</a></li>
+                    {% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2  %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ p }}">{{ p }}</a>
+        </li>
+                   {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
 {% endblock content %}

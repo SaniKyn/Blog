@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin  # Наследование
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -11,33 +12,58 @@ class BlogListView(ListView):
     template_name = 'home.html'
 
 
+class PostsByAuthorView(ListView):
+    paginate_by = 3
+    model = Post
+    template_name = 'home.html'
+
+    # https://docs.djangoproject.com/en/3.2/topics/db/queries/
+    def get_queryset(self):
+        author_id = self.kwargs["author_id"]
+        return Post.objects.filter(author__id=author_id)
+
+
 class BlogDetailView(DetailView):
     model = Post
     template_name = 'post_detail.html'
 
 
-class BlogCreateView(CreateView):
+class BlogCreateView(LoginRequiredMixin, CreateView):
     model = Post
     template_name = 'post_new.html'
-    fields = ['title', 'author', 'body', 'header_image']
+    fields = ['title', 'body', 'header_image']
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
 
 
-class BlogUpdateView(UpdateView):
+class BlogUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
     template_name = 'post_edit.html'
     fields = ['title', 'body']
 
+    def test_func(self):
+        return self.get_object().author == self.request.user or self.request.user.is_staff
 
-class BlogDeleteView(DeleteView):
+
+class BlogDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Post
     template_name = 'post_delete.html'
     success_url = reverse_lazy('home')
 
+    def test_func(self):
+        return self.get_object().author == self.request.user or self.request.user.is_superuser
 
-class AddCommentView(CreateView):
+
+class AddCommentView(LoginRequiredMixin, CreateView):
     model = Comment
     template_name = 'add_comment.html'
     fields = '__all__'
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
 
 
 class HomePageView(ListView):
