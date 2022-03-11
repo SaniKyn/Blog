@@ -11,6 +11,17 @@ class BlogListView(ListView):
     template_name = 'home.html'
 
 
+class PostsByAuthorView(ListView):
+    paginate_by = 3
+    model = Post
+    template_name = 'home.html'
+
+    # https://docs.djangoproject.com/en/3.2/topics/db/queries/
+    def get_queryset(self):
+        author_id = self.kwargs["author_id"]
+        return Post.objects.filter(author__id=author_id)
+
+
 class BlogDetailView(DetailView):
     model = Post
     template_name = 'post_detail.html'

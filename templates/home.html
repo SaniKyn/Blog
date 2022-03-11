@@ -1,14 +1,44 @@
 {% extends 'base.html' %}
 
 {% block content %}
-{% for post in object_list %}
-<div class="post-entry">
-    <h2><a href="{% url 'post_detail' post.pk %}">{{ post.title }}</a></h2>
-    {% if post.header_image %}
-    <img src="{{ post.header_image.url}}" alt="{{ post.title }}">
-    {% endif %}
-    <p>{{ post.body }}</p>
-    <b>{{ post.author.username}} | {{post.date}}</b>
+<!-- https://getbootstrap.com/docs/4.6/components/card/ -->
+<div class="card-deck">
+    {% for post in object_list %}
+    <div class="card border-primary">
+        {% if post.header_image %}
+        <a href="{{ post.get_absolute_url }}"><img src="{{ post.header_image.url}}" class="card-img-top"
+                                                   alt="{{ post.title }}"></a>
+        {% endif %}
+        <div class="card-header">
+            <h2 class="card-title"><a href="{% url 'post_detail' post.pk %}">{{ post.title }}</a></h2>
+        </div>
+        <div class="card-body">
+            <!--     https://docs.djangoproject.com/en/3.2/ref/templates/builtins/#truncatewords-html -->
+            {{ post.body | truncatewords_html:20 }}
+        </div>
+        <div class="card-footer text-center">
+            <a class="btn btn-outline-success" href="{% url 'posts_by_author' post.author.id %}">
+                {{ post.author.username }}</a> | {{ post.date}} | <span class="text-muted">{{ post.comments.count }} comments</span>
+        </div>
+    </div>
+    {% endfor %}
 </div>
-{% endfor %}
+
+<!-- pagination  -->
+<!-- https://getbootstrap.com/docs/4.6/components/pagination/#alignment -->
+<nav class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+        </span>
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</nav>
 {% endblock content %}

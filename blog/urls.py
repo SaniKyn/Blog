@@ -8,6 +8,7 @@ from .views import (
     BlogDeleteView,
     AddCommentView,
     HomePageView,
+    PostsByAuthorView
 )
 
 urlpatterns = [
@@ -18,4 +19,5 @@ urlpatterns = [
     path('', BlogListView.as_view(), name='home'),
     path('post/<int:pk>/comment/', AddCommentView.as_view(), name='add_comment'),
     path('', HomePageView.as_view(), name='home'),
+    path('post/author/<int:author_id>', PostsByAuthorView.as_view(), name='posts_by_author'),
 ]
