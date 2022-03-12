@@ -6,7 +6,7 @@
     {% for post in object_list %}
     <div class="card border-primary">
         {% if post.header_image %}
-        <a href="{{ post.get_absolute_url }}"><img src="{{ post.header_image.url}}" class="card-img-top"
+        <a href="{{ post.get_absolute_url }}"><img src="{{ post.header_image.url }}" class="card-img-top"
                                                    alt="{{ post.title }}"></a>
         {% endif %}
         <div class="card-header">
@@ -22,23 +22,35 @@
         </div>
     </div>
     {% endfor %}
-</div>
+</div><br>
 
 <!-- pagination  -->
 <!-- https://getbootstrap.com/docs/4.6/components/pagination/#alignment -->
-<nav class="pagination">
-    <span class="step-links">
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+
         {% if page_obj.has_previous %}
-            <a href="?page=1">&laquo; first</a>
-            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+        </li>
         {% endif %}
-        <span class="current">
-            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
-        </span>
+
+        {% for p in paginator.page_range %}
+                   {% if page_obj.number == p %}
+        <li class="page-item "><a class="page-link">{{ p }}</a></li>
+                    {% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2  %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ p }}">{{ p }}</a>
+        </li>
+                   {% endif %}
+        {% endfor %}
+
         {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}">next</a>
-            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+        </li>
         {% endif %}
-    </span>
+    </ul>
 </nav>
 {% endblock content %}
