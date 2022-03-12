@@ -9,12 +9,12 @@
     {% endif %}
     <div class="card-body">
         <h2 class="card-title">{{ post.title }}</h2>
-        <p class="card-text"><small class="text-muted">Date of:{{ post.date }}</small></p>
+        <p class="card-text"><small class="text-muted">{{ post.author }} | Date of: {{ post.date }}</small></p>
         <p class="card-text">{{ post.body }}</p>
     </div>
 </div>
 
-<main>
+<div>
     <a href="{% url 'post_edit' post.pk %}">
         <button type="button" class="btn btn-warning">Edit Blog Post</button>
     </a>
@@ -24,21 +24,20 @@
     <a href="{% url 'add_comment'  post.pk%}">
         <button type="button" class="btn btn-primary">Add Comment</button>
     </a>
-</main><br>
+</div><br>
 
 
 <div class="alert alert-success" role="alert">
     <h2> Comments... </h2>
     <main>
         {% if not post.comments.all%}
-        No comments Yet...<a href="{% url 'add_comment'  post.pk%}">
-        Add One</a>
+        No comments Yet...
         {% else %}
         {% for comment in post.comments.all %}
         <div class="card">
             <div class="card-header">
                 <strong>
-                    {{comment.name}}
+                    {{ comment.name }}
                 </strong>
             </div>
             <div class="card-body">
