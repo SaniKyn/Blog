@@ -1,7 +1,9 @@
-from PIL import Image
 from django.db import models
 from django.urls import reverse, reverse_lazy
-_MAX_SIZE = 300
+from taggit.managers import TaggableManager
+
+
+# _MAX_SIZE = 300
 
 class Post(models.Model):
     title = models.CharField(max_length=200, null=True)
@@ -13,6 +15,7 @@ class Post(models.Model):
     )
     date = models.DateTimeField(auto_now_add=True, null=True)
     body = models.TextField()
+    tags = TaggableManager()
 
     # def save(self, *args, **kwargs):
     #     super(Post, self).save(*args, **kwargs)
