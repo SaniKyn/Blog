@@ -1,7 +1,9 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin  # Наследование
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from taggit.models import Tag
 
 from .models import Post, Comment
 
@@ -31,7 +33,7 @@ class BlogDetailView(DetailView):
 class BlogCreateView(LoginRequiredMixin, CreateView):
     model = Post
     template_name = 'post_new.html'
-    fields = ['title', 'body', 'header_image']
+    fields = ['title', 'body', 'header_image', 'tags']
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -69,3 +71,14 @@ class AddCommentView(LoginRequiredMixin, CreateView):
 class HomePageView(ListView):
     model = Post
     template_name = 'home'
+
+
+def tagged(request, slug):
+    tag = get_object_or_404(Tag, slug=slug)
+    common_tags = Post.tags.most_common()[:4]
+    context = {
+        'tag': tag,
+        'common_tags': common_tags,
+    }
+    return render(request, 'home.html', context)
+
