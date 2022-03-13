@@ -9,14 +9,14 @@ from .models import Post, Comment
 
 
 class BlogListView(ListView):
-    paginate_by = 3
+    paginate_by = 6
     model = Post
     template_name = 'home.html'
     context_object_name = 'posts'
 
 
 class PostsByAuthorView(ListView):
-    paginate_by = 3
+    paginate_by = 6
     model = Post
     template_name = 'home.html'
     context_object_name = 'posts'
