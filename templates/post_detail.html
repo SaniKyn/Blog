@@ -11,14 +11,14 @@
         <div class="card-img-overlay">
             <h2 class="card-title">{{ post.title }}</h2>
             <p class="card-text">{{ post.body }}</p>
-            <p class="card-text"><small class="text-white">{{ post.author }} | Date of: {{ post.date }}</small></p>
+            <p class="card-text"><small class="text-white"> &#128394; {{ post.author }} | &#128197; {{ post.date }}</small></p>
         </div>
     </div>
     {% else %}
     <div class="card-body">
         <h2 class="card-title">{{ post.title }}</h2>
         <p class="card-text">{{ post.body }}</p>
-        <p class="card-text"><small class="text-muted">{{ post.author }} | &#128197; {{ post.date }}</small></p>
+        <p class="card-text"><small class="text-muted"> &#128394; {{ post.author }} | &#128197; {{ post.date }}</small></p>
     </div>
     {% endif %}
 </div>
