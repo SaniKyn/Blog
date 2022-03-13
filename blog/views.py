@@ -75,10 +75,10 @@ class HomePageView(ListView):
 
 def tagged(request, slug):
     tag = get_object_or_404(Tag, slug=slug)
-    common_tags = Post.tags.most_common()[:4]
+    posts = Post.objects.filter(tags=tag)
     context = {
         'tag': tag,
-        'common_tags': common_tags,
+        'posts': posts,
     }
     return render(request, 'home.html', context)
 
