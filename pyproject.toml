@@ -9,6 +9,7 @@ license = "MIT"
 python = "^3.9"
 Django = "~=3.2"
 django-taggit = "^2.1.0"
+django-social-share = "^2.2.1"
 
 [tool.poetry.dev-dependencies]
 black = "^22.1.0"

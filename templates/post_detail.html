@@ -40,8 +40,12 @@
         <button type="button" class="btn btn-primary">Add Comment</button>
     </a>
     {% endif %}
-    {% post_to_facebook "Post to Facebook" %}
-</div><br>
+    <br><br>
+    <div class="alert alert-warning" role="alert">
+        <h5>Social share:</h5>
+        {% post_to_facebook "Post to Facebook!" %}
+    </div>
+</div>
 
 
 <div class="alert alert-success" role="alert">
