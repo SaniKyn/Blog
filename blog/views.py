@@ -12,12 +12,14 @@ class BlogListView(ListView):
     paginate_by = 3
     model = Post
     template_name = 'home.html'
+    context_object_name = 'posts'
 
 
 class PostsByAuthorView(ListView):
     paginate_by = 3
     model = Post
     template_name = 'home.html'
+    context_object_name = 'posts'
 
     # https://docs.djangoproject.com/en/3.2/topics/db/queries/
     def get_queryset(self):
@@ -71,6 +73,7 @@ class AddCommentView(LoginRequiredMixin, CreateView):
 class HomePageView(ListView):
     model = Post
     template_name = 'home'
+    context_object_name = 'posts'
 
 
 def tagged(request, slug):
