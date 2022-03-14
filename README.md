@@ -7,7 +7,7 @@
 cd ~/Desktop
 mkdir blog
 cd blog
-poetry add django~=3.2
+poetry add django ~= 3.2
 poetry shell
 
 # Новое приложение
